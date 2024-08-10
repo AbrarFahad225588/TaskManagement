@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if  tasks %}
+<h2>Tasks</h2>
+<div class="row">
+    {% for task in tasks %}
+        <div class="col-sm-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Task Id : {{ task.id }}</h5>
+                    <h5 class="card-title">{{ task.taskTitle }}</h5>
+                    <p class="card-text">{{ task.taskDescription }}</p>
+                    <span class="card-text"> Categories : </span>
+                    {% for cat in task.categories.all %}
+                    
+                    <button class="btn btn-primary m-2">{{ cat.category_name }}</button>
+                    {% endfor %}
+                    <p class="card-text"><small class="text-muted">Assigned on {{ task.task_assign_date }}</small></p>
+                    {% if not task.is_completed %}
+                        <a href="{% url 'edit_task' task.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
+                        <a href="{% url 'complete_task' task.id %}" class="btn btn-success">Complete</a>
+                    {% else %}
+                        <span class="badge bg-success">Completed</span>
+                        <a href="{% url 'delete_task' task.id %}" class="badge  bg-danger">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<h1>NO Task at Right Now</h1>
+{% endif %}
+{% endblock %}
